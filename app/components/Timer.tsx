@@ -50,9 +50,13 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
 
   return (
     <div>
-      <h2>{padNum(minutesLeft)}:{padNum(secondsLeft)}</h2>
-      <a onClick={startTimer} className={styles.toolbarButton}>Start</a>
-      <a onClick={stopTimer} className={styles.toolbarButton}>Stop</a>
+      <div className={styles.timerDisplay}>{padNum(minutesLeft)}:{padNum(secondsLeft)}</div>
+      <span className={styles.timerButton}>
+        <i onClick={startTimer} className="far fa-play-circle"></i>
+      </span>
+      <span className={styles.timerButton}>
+        <i onClick={stopTimer} className="far fa-stop-circle"></i>
+      </span>
     </div>
   );
 };
