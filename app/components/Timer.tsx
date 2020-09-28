@@ -27,8 +27,6 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
 
   useEffect(() => {
     if (!totalSeconds) {
-      console.info(totalSeconds);
-      //soundFinish.play();
       resetTimer();
       return;
     };
@@ -38,8 +36,8 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
         setSecondsLeft(calculateSecondsLeft());
         setMinutesLeft(calculateMinutesLeft());
         if (totalSeconds === 1) {
-          //soundFinish.play();
-          //resetTimer();
+          soundFinish.play();
+          new Notification('Pomodoro Timer', { body: 'Pomodoro has finished'});
         }
     }, 1000);
     setTimer(intervalId);
@@ -51,12 +49,14 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
   const startTimer = (): void => {
     setTotalSeconds(sessionLength);
     soundStart.play();
+    new Notification('Pomodoro Timer', { body: 'New pomodoro has started'});
   };
 
   const stopTimer = (): void => {
     soundStop.play();
     clearInterval(timer);
     resetTimer();
+    new Notification('Pomodoro Timer', { body: 'Timer has been interrupted'});
   };
 
   const resetTimer = (): void => {
