@@ -1,7 +1,11 @@
 .timerButton {
     font-size: 4rem;
     cursor: pointer;
+    margin-right: 10px;
 }
 .timerDisplay {
     font-size: 6rem;
+}
+.tomatoPicture {
+    height: 200px;
 }

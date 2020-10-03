@@ -1,8 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Timer.css';
+import Tomato from "./Tomato";
 
 interface Props {
   sessionLength: number;
+}
+
+enum mode {
+  standby = 'STANDBY',
+  working = 'WORKING',
+  break = 'BREAK',
+  finishing = 'FINISHING'
 }
 
 const Timer: React.FC<Props> = ({sessionLength}) => {
@@ -10,6 +18,7 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
   const [minutesLeft, setMinutesLeft] = useState<number>(0);
   const [secondsLeft, setSecondsLeft] = useState<number>(0);
   const [timer, setTimer] = useState<number | null>(null);
+  const [timerMode, setTimerMode] = useState<mode>(mode.standby)
 
   // timer sounds
   const soundStart:HTMLAudioElement = new Audio('../resources/sounds/timer_start.wav');
@@ -34,6 +43,12 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
         setTotalSeconds(totalSeconds - 1);
         setSecondsLeft(calculateSecondsLeft());
         setMinutesLeft(calculateMinutesLeft());
+
+        // change mode when there are 3 minutes left to display a different picture
+        if (totalSeconds < 180 && timerMode !== mode.finishing) {
+          setTimerMode(mode.finishing);
+        }
+
         if (totalSeconds === 1) {
           soundFinish.play();
           new Notification('Pomodoro Timer', { body: 'Pomodoro has finished'});
@@ -49,6 +64,7 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
     setTotalSeconds(sessionLength);
     soundStart.play();
     new Notification('Pomodoro Timer', { body: 'New pomodoro has started'});
+    setTimerMode(mode.working);
   };
 
   const stopTimer = (): void => {
@@ -56,6 +72,7 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
     clearInterval(timer);
     resetTimer();
     new Notification('Pomodoro Timer', { body: 'Timer has been interrupted'});
+    setTimerMode(mode.standby);
   };
 
   const resetTimer = (): void => {
@@ -70,6 +87,9 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
 
   return (
     <div>
+      <div className={styles.tomatoPicture}>
+        <Tomato timerMode={timerMode} />
+      </div>
       <div className={styles.timerDisplay}>{padNum(minutesLeft)}:{padNum(secondsLeft)}</div>
       <span className={styles.timerButton}>
         <i onClick={startTimer} className="far fa-play-circle"></i>
