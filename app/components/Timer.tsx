@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Timer.css';
-import {Howl} from 'howler';
 
 interface Props {
   sessionLength: number;
@@ -13,9 +12,9 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
   const [timer, setTimer] = useState<number | null>(null);
 
   // timer sounds
-  const soundStart:Howl = new Howl({src: ['../resources/sounds/timer_start.wav'], preload: true});
-  const soundStop:Howl = new Howl({src: ['../resources/sounds/timer_stop.wav'], preload: true});
-  const soundFinish:Howl = new Howl({src: ['../resources/sounds/timer_finish.wav'], preload: true});
+  const soundStart:HTMLAudioElement = new Audio('../resources/sounds/timer_start.wav');
+  const soundStop:HTMLAudioElement = new Audio('../resources/sounds/timer_stop.wav');
+  const soundFinish:HTMLAudioElement = new Audio('../resources/sounds/timer_finish.wav');
 
   const calculateMinutesLeft = (): number => {
     return Math.floor(totalSeconds / 60);
