@@ -1,5 +1,5 @@
 # Pomodoro Timer
-A simple cross platform [pomodoro](https://en.wikipedia.org/wiki/Pomodoro_Technique) timer app. 
+A simple cross platform [pomodoro](https://en.wikipedia.org/wiki/Pomodoro_Technique) timer app built with Electron, React and Typescript. 
 
 
 ## Getting started
