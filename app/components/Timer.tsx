@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Timer.css';
 import Tomato from "./Tomato";
+import startWav from '../../resources/sounds/timer_start.wav';
+import stopWav from '../../resources/sounds/timer_stop.wav';
+import finishWav from '../../resources/sounds/timer_finish.wav';
 
 interface Props {
   sessionLength: number;
@@ -18,12 +21,12 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
   const [minutesLeft, setMinutesLeft] = useState<number>(0);
   const [secondsLeft, setSecondsLeft] = useState<number>(0);
   const [timer, setTimer] = useState<number | null>(null);
-  const [timerMode, setTimerMode] = useState<mode>(mode.standby)
+  const [timerMode, setTimerMode] = useState<mode>(mode.standby);
 
   // timer sounds
-  const soundStart:HTMLAudioElement = new Audio('../resources/sounds/timer_start.wav');
-  const soundStop:HTMLAudioElement = new Audio('../resources/sounds/timer_stop.wav');
-  const soundFinish:HTMLAudioElement = new Audio('../resources/sounds/timer_finish.wav');
+  const soundStart:HTMLAudioElement = new Audio(startWav);
+  const soundStop:HTMLAudioElement = new Audio(stopWav);
+  const soundFinish:HTMLAudioElement = new Audio(finishWav);
 
   const calculateMinutesLeft = (): number => {
     return Math.floor(totalSeconds / 60);
@@ -51,7 +54,7 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
 
         if (totalSeconds === 1) {
           soundFinish.play();
-          new Notification('Pomodoro Timer', { body: 'Pomodoro has finished'});
+          new Notification('Pomodoro Timer', { body: 'Pomodoro has finished', icon: __dirname + '/assets/icons/notification.png'});
         }
     }, 1000);
     setTimer(intervalId);
@@ -63,7 +66,7 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
   const startTimer = (): void => {
     setTotalSeconds(sessionLength);
     soundStart.play();
-    new Notification('Pomodoro Timer', { body: 'New pomodoro has started'});
+    new Notification('Pomodoro Timer', { body: 'New pomodoro has started', icon: '../resources/icons/notification.png'});
     setTimerMode(mode.working);
   };
 
@@ -71,7 +74,7 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
     soundStop.play();
     clearInterval(timer);
     resetTimer();
-    new Notification('Pomodoro Timer', { body: 'Timer has been interrupted'});
+    new Notification('Pomodoro Timer', { body: 'Timer has been interrupted', icon: '../resources/icons/notification.png'});
     setTimerMode(mode.standby);
   };
 
