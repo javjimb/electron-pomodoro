@@ -7,6 +7,7 @@ import finishWav from '../../resources/sounds/timer_finish.wav';
 
 interface Props {
   sessionLength: number;
+  incrementPomodoros: () => void;
 }
 
 enum mode {
@@ -16,7 +17,7 @@ enum mode {
   finishing = 'FINISHING'
 }
 
-const Timer: React.FC<Props> = ({sessionLength}) => {
+const Timer: React.FC<Props> = ({sessionLength, incrementPomodoros}) => {
   const [totalSeconds, setTotalSeconds] = useState<number>(0);
   const [minutesLeft, setMinutesLeft] = useState<number>(0);
   const [secondsLeft, setSecondsLeft] = useState<number>(0);
@@ -40,7 +41,7 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
     if (!totalSeconds) {
       resetTimer();
       return;
-    };
+    }
 
     const intervalId = setInterval(() => {
         setTotalSeconds(totalSeconds - 1);
@@ -55,6 +56,8 @@ const Timer: React.FC<Props> = ({sessionLength}) => {
         if (totalSeconds === 1) {
           soundFinish.play();
           new Notification('Pomodoro Timer', { body: 'Pomodoro has finished', icon: __dirname + '/assets/icons/notification.png'});
+          setTimerMode(mode.standby);
+          incrementPomodoros();
         }
     }, 1000);
     setTimer(intervalId);
