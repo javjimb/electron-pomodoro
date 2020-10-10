@@ -30,7 +30,7 @@ const Timer: React.FC<Props> = ({sessionLength, incrementPomodoros}) => {
   const soundFinish:HTMLAudioElement = new Audio(finishWav);
 
   const calculateMinutesLeft = (): number => {
-    return Math.floor(totalSeconds / 60);
+      return Math.floor(totalSeconds / 60);
   };
 
   const calculateSecondsLeft = (): number => {
@@ -38,15 +38,19 @@ const Timer: React.FC<Props> = ({sessionLength, incrementPomodoros}) => {
   };
 
   useEffect(() => {
+
     if (!totalSeconds) {
       resetTimer();
       return;
     }
 
     const intervalId = setInterval(() => {
+
         setTotalSeconds(totalSeconds - 1);
         setSecondsLeft(calculateSecondsLeft());
         setMinutesLeft(calculateMinutesLeft());
+
+        setTimerMode(mode.working);
 
         // change mode when there are 3 minutes left to display a different picture
         if (totalSeconds < 180 && timerMode !== mode.finishing) {
@@ -70,7 +74,7 @@ const Timer: React.FC<Props> = ({sessionLength, incrementPomodoros}) => {
     setTotalSeconds(sessionLength);
     soundStart.play();
     new Notification('Pomodoro Timer', { body: 'New pomodoro has started', icon: '../resources/icons/notification.png'});
-    setTimerMode(mode.working);
+
   };
 
   const stopTimer = (): void => {
@@ -96,7 +100,17 @@ const Timer: React.FC<Props> = ({sessionLength, incrementPomodoros}) => {
       <div className={styles.tomatoPicture}>
         <Tomato timerMode={timerMode} />
       </div>
-      <div className={styles.timerDisplay}>{padNum(minutesLeft)}:{padNum(secondsLeft)}</div>
+
+      {timerMode === mode.working &&
+        <div className={styles.timerDisplay}>{padNum(minutesLeft)}:{padNum(secondsLeft)}</div>
+      }
+
+      {timerMode === mode.standby &&
+        <div className={styles.timerDisplay}>
+          {padNum(Math.floor(sessionLength / 60))}:{padNum(sessionLength % 60)}
+        </div>
+      }
+
       <span className={styles.timerButton}>
         <i onClick={startTimer} className="far fa-play-circle"></i>
       </span>

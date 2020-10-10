@@ -17,3 +17,12 @@
   font-size: 1.3rem;
   margin-top: 15px;
 }
+
+.sessionOptions {
+  margin-top: 15px;
+}
+
+.sessionOptions a {
+  font-size: 1rem !important;
+  margin: 0px 5px;
+}
