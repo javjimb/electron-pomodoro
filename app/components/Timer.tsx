@@ -4,6 +4,7 @@ import Tomato from "./Tomato";
 import startWav from '../../resources/sounds/timer_start.wav';
 import stopWav from '../../resources/sounds/timer_stop.wav';
 import finishWav from '../../resources/sounds/timer_finish.wav';
+import notificationIcon from '../../resources/icons/notification.png';
 
 interface Props {
   sessionLength: number;
@@ -59,7 +60,7 @@ const Timer: React.FC<Props> = ({sessionLength, incrementPomodoros}) => {
 
         if (totalSeconds === 1) {
           soundFinish.play();
-          new Notification('Pomodoro Timer', { body: 'Pomodoro has finished', icon: __dirname + '/assets/icons/notification.png'});
+          new Notification('Pomodoro Timer', { body: 'Pomodoro has finished', icon: notificationIcon});
           setTimerMode(mode.standby);
           incrementPomodoros();
         }
@@ -73,7 +74,7 @@ const Timer: React.FC<Props> = ({sessionLength, incrementPomodoros}) => {
   const startTimer = (): void => {
     setTotalSeconds(sessionLength);
     soundStart.play();
-    new Notification('Pomodoro Timer', { body: 'New pomodoro has started', icon: '../resources/icons/notification.png'});
+    new Notification('Pomodoro Timer', { body: 'New pomodoro has started', icon: notificationIcon});
 
   };
 
@@ -81,7 +82,7 @@ const Timer: React.FC<Props> = ({sessionLength, incrementPomodoros}) => {
     soundStop.play();
     clearInterval(timer);
     resetTimer();
-    new Notification('Pomodoro Timer', { body: 'Timer has been interrupted', icon: '../resources/icons/notification.png'});
+    new Notification('Pomodoro Timer', { body: 'Timer has been interrupted', icon: notificationIcon});
     setTimerMode(mode.standby);
   };
 
